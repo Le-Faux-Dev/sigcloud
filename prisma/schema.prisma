@@ -1,0 +1,228 @@
+// Schéma SIG-Cloud (MVP).
+// Les fichiers binaires ne sont JAMAIS en base : seulement leurs métadonnées et une clé privée de stockage (R2).
+// Le SQL de la migration initiale (prisma/migrations/0001_init) a été écrit à la main pour ce schéma ;
+// valide-le chez toi avec `npx prisma migrate dev` (voir docs/DEPLOYMENT.md).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+// État du transfert du fichier vers le stockage
+enum UploadStatus {
+  UPLOADING
+  READY
+}
+
+// Contrôle de sécurité : AUCUN antivirus au MVP, donc jamais de valeur « sain ».
+//  PENDING          : en attente de vérification
+//  FORMAT_VERIFIED  : signature et structure du format vérifiées (pas d'analyse antivirus)
+//  NOT_DEEP_SCANNED : stocké tel quel, non analysé en profondeur (archives, formats complexes)
+enum SecurityStatus {
+  PENDING
+  FORMAT_VERIFIED
+  NOT_DEEP_SCANNED
+}
+
+enum PreviewStatus {
+  NONE
+  PREVIEWABLE
+  UNSUPPORTED
+}
+
+model User {
+  id           String    @id @default(uuid())
+  email        String    @unique
+  displayName  String
+  passwordHash String
+  role         Role      @default(USER)
+  quotaBytes   BigInt
+  usedBytes    BigInt    @default(0)
+  disabledAt   DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  sessions            Session[]
+  folders             Folder[]
+  files               FileAsset[]
+  shareLinks          ShareLink[]
+  grantsReceived      ShareGrant[]         @relation("GrantGrantee")
+  grantsGiven         ShareGrant[]         @relation("GrantOwner")
+  passwordResetTokens PasswordResetToken[]
+
+  @@map("users")
+}
+
+model Session {
+  id         String    @id @default(uuid())
+  userId     String
+  tokenHash  String    @unique
+  csrfToken  String
+  userAgent  String?
+  ipHash     String?
+  createdAt  DateTime  @default(now())
+  lastSeenAt DateTime  @default(now())
+  expiresAt  DateTime
+  revokedAt  DateTime?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("sessions")
+}
+
+model PasswordResetToken {
+  id        String    @id @default(uuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("password_reset_tokens")
+}
+
+model Folder {
+  id           String    @id @default(uuid())
+  ownerId      String
+  parentId     String?
+  name         String
+  deletedAt    DateTime?
+  trashBatchId String?
+  trashRoot    Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  owner      User         @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  parent     Folder?      @relation("FolderTree", fields: [parentId], references: [id], onDelete: Cascade)
+  children   Folder[]     @relation("FolderTree")
+  files      FileAsset[]
+  shareLinks ShareLink[]
+  grants     ShareGrant[]
+
+  @@index([ownerId, parentId, deletedAt])
+  @@index([parentId])
+  @@index([trashBatchId])
+  @@map("folders")
+}
+
+model FileAsset {
+  id               String         @id @default(uuid())
+  ownerId          String
+  folderId         String?
+  name             String
+  extension        String
+  sizeBytes        BigInt
+  storageKey       String         @unique
+  multipartId      String?
+  uploadStatus     UploadStatus   @default(UPLOADING)
+  securityStatus   SecurityStatus @default(PENDING)
+  previewStatus    PreviewStatus  @default(NONE)
+  previewReason    String?
+  detectedType     String?
+  sha256           String?
+  description      String?
+  tags             String[]       @default([])
+  geoMeta          Json?
+  deletedAt        DateTime?
+  trashBatchId     String?
+  trashRoot        Boolean        @default(false)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  owner      User        @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  folder     Folder?     @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  shareLinks ShareLink[]
+  grants     ShareGrant[]
+
+  @@index([ownerId, folderId, deletedAt])
+  @@index([ownerId, uploadStatus, createdAt])
+  @@index([folderId])
+  @@index([trashBatchId])
+  @@map("file_assets")
+}
+
+// Lien de partage. Le jeton n'est jamais stocké en clair : seulement son hash SHA-256.
+// Un CHECK SQL impose exactement un des deux champs fileId / folderId (voir la migration).
+model ShareLink {
+  id          String    @id @default(uuid())
+  tokenHash   String    @unique
+  fileId      String?
+  folderId    String?
+  createdById String
+  canDownload Boolean   @default(false)
+  expiresAt   DateTime?
+  revokedAt   DateTime?
+  createdAt   DateTime  @default(now())
+
+  file      FileAsset? @relation(fields: [fileId], references: [id], onDelete: Cascade)
+  folder    Folder?    @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  createdBy User       @relation(fields: [createdById], references: [id], onDelete: Cascade)
+
+  @@index([fileId])
+  @@index([folderId])
+  @@index([createdById])
+  @@map("share_links")
+}
+
+// Partage avec un compte utilisateur. Même CHECK « exactement un de fileId / folderId ».
+model ShareGrant {
+  id          String   @id @default(uuid())
+  ownerId     String
+  granteeId   String
+  fileId      String?
+  folderId    String?
+  canDownload Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  owner   User       @relation("GrantOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  grantee User       @relation("GrantGrantee", fields: [granteeId], references: [id], onDelete: Cascade)
+  file    FileAsset? @relation(fields: [fileId], references: [id], onDelete: Cascade)
+  folder  Folder?    @relation(fields: [folderId], references: [id], onDelete: Cascade)
+
+  @@unique([granteeId, fileId])
+  @@unique([granteeId, folderId])
+  @@index([ownerId])
+  @@index([fileId])
+  @@index([folderId])
+  @@map("share_grants")
+}
+
+// Journal des actions de sécurité : jamais de mot de passe, jeton, URL signée ni contenu de fichier.
+model AuditLog {
+  id         BigInt   @id @default(autoincrement())
+  userId     String?
+  action     String
+  targetType String?
+  targetId   String?
+  meta       Json?
+  ipHash     String?
+  createdAt  DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([userId, createdAt])
+  @@index([action, createdAt])
+  @@map("audit_logs")
+}
+
+// Limitation de débit (store « postgres » : fonctionne en serverless, sans service supplémentaire)
+model RateLimit {
+  key     String   @id
+  count   Int
+  resetAt DateTime
+
+  @@index([resetAt])
+  @@map("rate_limits")
+}

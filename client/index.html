@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SIG-Cloud · Stocke, prévisualise et partage tes fichiers SIG</title>
+<meta name="description" content="SIG-Cloud : un espace de stockage pour tes données géospatiales (GeoJSON, KML, Shapefile, GeoTIFF…) avec aperçu cartographique et partage maîtrisé.">
+<meta name="theme-color" content="#0a2540">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/assets/fonts/instrument-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/app.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Aller au contenu</a>
+<header class="site-header" id="site-header"><div class="inner">
+  <a class="brand" href="/"><svg class="icon brand-mark icon-lg" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#i-map-pin"/></svg><span>SIG-Cloud</span></a>
+  <button type="button" class="icon-btn nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Ouvrir le menu"><svg class="icon " aria-hidden="true" focusable="false"><use href="/assets/icons.svg#i-menu"/></svg></button>
+  <nav class="site-nav" id="site-nav" aria-label="Navigation principale">
+    <a class="btn btn-ghost btn-sm" href="#comment">Comment ça marche</a>
+    <a class="btn btn-ghost btn-sm" href="#formats">Formats</a>
+    <a class="btn btn-ghost btn-sm" href="#limites">Limites</a>
+    <a class="btn btn-secondary btn-sm" href="/login.html" data-guest>Se connecter</a>
+    <a class="btn btn-primary btn-sm" href="/register.html" data-auth-cta><svg class="icon " aria-hidden="true" focusable="false"><use href="/assets/icons.svg#i-user-plus"/></svg><span>Créer un compte</span></a>
+  </nav>
+</div></header>
+<main id="main" tabindex="-1">
+  <section class="hero" aria-labelledby="h-hero">
+    <div class="contours" id="contours" aria-hidden="true"></div>
+    <div class="wrap"><div class="hero-inner">
+      <h1 id="h-hero">Tes données SIG, enfin au même endroit.</h1>
+      <p class="lead">Dépose tes GeoJSON, KML, Shapefiles ou GeoTIFF. Visualise-les sur une carte directement dans le navigateur, puis partage-les avec un lien ou avec des personnes précises, avec un contrôle clair de qui peut voir et télécharger.</p>
+      <div class="actions">
+        <a class="btn btn-primary btn-lg" href="/register.html" data-auth-cta><svg class="icon " aria-hidden="true" focusable="false"><use href="/assets/icons.svg#i-cloud-upload"/></svg><span>Créer mon espace</span></a>
+        <a class="btn btn-outline btn-lg" href="#comment">Voir comment ça marche</a>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="section" id="comment" aria-labelledby="h-how"><div class="wrap">
+    <h2 id="h-how">Comment ça marche</h2>
+    <p class="intro">Trois gestes à connaître. Chaque écran se joue en boucle ; le texte dessous donne les étapes.</p>
+    <div class="demo-grid">
+      <figure class="demo-card m-0">
+        <div class="demo-box"><div class="demo demo-1" aria-hidden="true"><div class="abs d-side"></div><div class="abs d-brand">SIG-Cloud</div><div class="abs d-nav y14">Tableau de bord</div><div class="abs d-nav y21">Mes fichiers</div><div class="abs d-nav y28">Corbeille</div>
+<div class="abs d-nav d-nav-on y14 d1-navold">Tableau de bord</div><div class="abs d-nav d-nav-on y21 d1-nav">Mes fichiers</div>
+<div class="abs d-title d1-navold">Tableau de bord</div><div class="abs d-title d1-nav">Mes fichiers</div>
+<div class="abs d-btn d-primary d-top-btn d1-importer">Importer</div>
+<div class="abs d-center c-mid d1-empty">Aucun fichier pour le moment</div>
+<div class="d1-row"><div class="abs d-row r-top "><span class="d-ico"></span><span class="d-name">carte.geojson</span><span class="d-chip info">Aperçu</span><span class="d-chip">Vérifié</span><span class="d-dots">···</span></div></div>
+<div class="abs d-panel p-up d1-panel"><span class="d-name">carte.geojson</span><div class="d-bar"><i></i></div><div class="d-status"><span class="abs d1-prog">Envoi en cours…</span><span class="abs d1-done">Terminé</span></div></div>
+<div class="abs d-cursor" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4.037 4.688a.495.495 0 0 1 .651-.651l16 6.5a.5.5 0 0 1-.063.947l-6.124 1.58a2 2 0 0 0-1.438 1.435l-1.579 6.126a.5.5 0 0 1-.947.063z"/></svg></div></div></div>
+        <figcaption><h3>1. Ajouter un fichier</h3>
+          <ol class="demo-steps"><li>Clique sur « Importer » (ou glisse le fichier dans la page).</li><li>Suis la progression : « Terminé » s'affiche quand le contenu est vérifié.</li><li>Ouvre « Mes fichiers » pour le retrouver, puis clique dessus pour le visualiser.</li></ol></figcaption>
+      </figure>
+      <figure class="demo-card m-0">
+        <div class="demo-box"><div class="demo demo-2" aria-hidden="true"><div class="abs d-side"></div><div class="abs d-brand">SIG-Cloud</div><div class="abs d-nav y14">Tableau de bord</div><div class="abs d-nav y21">Mes fichiers</div><div class="abs d-nav y28">Corbeille</div>
+<div class="abs d-nav d-nav-on y21 d2-nav1">Mes fichiers</div><div class="abs d-nav d-nav-on y28 d2-nav2">Corbeille</div>
+<div class="d2-files"><div class="abs d-title">Mes fichiers</div><div class="d2-filerow"><div class="abs d-row r-top "><span class="d-ico"></span><span class="d-name">carte.geojson</span><span class="d-chip info">Aperçu</span><span class="d-chip">Vérifié</span><span class="d-dots">···</span></div></div></div>
+<div class="d2-trash"><div class="abs d-title">Corbeille</div>
+<div class="abs d-row r-top d2-trashrow"><span class="d-name">carte.geojson</span><span class="d-dots2"></span><span class="d-btn d-second sm">Restaurer</span><span class="d-btn d-danger sm d2-del">Supprimer définitivement</span></div>
+<div class="abs d-center c-mid d2-trashempty">La corbeille est vide</div></div>
+<div class="abs d-menu m-row d2-menu"><span>Ouvrir</span><span>Partager</span><span class="hl dg">Mettre à la corbeille</span></div>
+<div class="abs d-toast d2-toast1">Placé dans la corbeille</div><div class="abs d-toast d2-toast2">Supprimé définitivement</div>
+<div class="abs d-cursor" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4.037 4.688a.495.495 0 0 1 .651-.651l16 6.5a.5.5 0 0 1-.063.947l-6.124 1.58a2 2 0 0 0-1.438 1.435l-1.579 6.126a.5.5 0 0 1-.947.063z"/></svg></div></div></div>
+        <figcaption><h3>2. Supprimer un fichier</h3>
+          <ol class="demo-steps"><li>Ouvre le menu « ⋮ » du fichier et choisis « Mettre à la corbeille ».</li><li>Va dans « Corbeille » : tu peux restaurer le fichier pendant 30 jours.</li><li>Clique sur « Supprimer définitivement » pour l'effacer pour toujours.</li></ol></figcaption>
+      </figure>
+      <figure class="demo-card m-0">
+        <div class="demo-box"><div class="demo demo-3" aria-hidden="true"><div class="abs d-side"></div><div class="abs d-brand">SIG-Cloud</div><div class="abs d-nav y14">Tableau de bord</div><div class="abs d-nav y21">Mes fichiers</div><div class="abs d-nav y28">Corbeille</div>
+<div class="abs d-nav d-nav-on y21 ">Mes fichiers</div>
+<div class="abs d-title">Mes fichiers</div><div class="abs d-row r-top "><span class="d-ico"></span><span class="d-name">carte.geojson</span><span class="d-chip info">Aperçu</span><span class="d-chip">Vérifié</span><span class="d-dots">···</span></div>
+<div class="abs d-menu m-row d3-menu"><span>Ouvrir</span><span class="hl">Partager</span><span>Mettre à la corbeille</span></div>
+<div class="abs d-panel p-dlg d3-dialog"><strong>Partager</strong><span class="d-check"><i></i>Autoriser le téléchargement</span><span class="d-field">Valable 30 jours</span>
+<span class="d-btn d-primary d3-create">Créer un lien</span>
+<div class="d3-link"><span class="d-field">https://sig-cloud.app/share.html#a8Fq2xT9…</span><span class="d-btn d-second d3-copy">Copier le lien</span></div></div>
+<div class="abs d-toast d3-toast">Lien copié</div>
+<div class="abs d-cursor" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4.037 4.688a.495.495 0 0 1 .651-.651l16 6.5a.5.5 0 0 1-.063.947l-6.124 1.58a2 2 0 0 0-1.438 1.435l-1.579 6.126a.5.5 0 0 1-.947.063z"/></svg></div></div></div>
+        <figcaption><h3>3. Partager</h3>
+          <ol class="demo-steps"><li>Ouvre le menu « ⋮ » du fichier et choisis « Partager ».</li><li>Règle le téléchargement et la durée, puis clique sur « Créer un lien ».</li><li>Copie le lien et envoie-le. Tu peux le révoquer à tout moment.</li></ol></figcaption>
+      </figure>
+    </div>
+  </div></section>
+
+  <section class="section band" aria-labelledby="h-abilities"><div class="wrap">
+    <h2 id="h-abilities">Ce que tu peux faire</h2>
+    <div class="abilities">
+      <div class="ability"><svg class="icon icon-lg" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#i-hard-drive"/></svg><h3>Stocker</h3><p>Importe des fichiers jusqu'à 50 Mo, par glisser-déposer. L'envoi reprend en cas de coupure réseau, et tu ranges tout dans des dossiers.</p></div>
+      <div class="ability"><svg class="icon icon-lg" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#i-map"/></svg><h3>Prévisualiser</h3><p>Les GeoJSON, KML et GPX s'affichent sur une carte avec leurs attributs. Les images, PDF et textes s'ouvrent aussi sans rien télécharger.</p></div>
+      <div class="ability"><svg class="icon icon-lg" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#i-share-2"/></svg><h3>Partager</h3><p>Un lien en consultation seule ou avec téléchargement, une durée de validité, ou un accès réservé à une adresse e-mail. Révocable à tout moment.</p></div>
+    </div>
+  </div></section>
+
+  <section class="section" id="formats" aria-labelledby="h-formats"><div class="wrap">
+    <h2 id="h-formats">Formats acceptés</h2>
+    <p class="intro">Tous ces formats sont stockés et téléchargeables. Seuls certains ont un aperçu dans le navigateur ; les autres s'ouvrent dans ton logiciel habituel (QGIS, ArcGIS…).</p>
+  </div>
+  <div class="marquee-wrap" id="marquee">
+    <div class="wrap"><button type="button" class="btn btn-ghost btn-sm" id="marquee-toggle" aria-pressed="false"><svg class="icon " aria-hidden="true" focusable="false"><use href="/assets/icons.svg#i-pause"/></svg><span>Mettre en pause le défilement</span></button></div>
+    <div class="marquee" id="marquee-rows" role="group" aria-label="Formats acceptés, défilement horizontal"><noscript><p class="wrap">La liste des formats nécessite JavaScript.</p></noscript></div>
+  </div>
+  <div class="wrap">
+    <details class="formats-details"><summary>Voir le détail de chaque format</summary>
+      <div class="table-wrap"><table class="formats-table">
+        <caption class="sr-only">Formats de fichiers acceptés et type d'aperçu</caption>
+        <thead><tr><th scope="col">Extension</th><th scope="col">Format</th><th scope="col">Catégorie</th><th scope="col">Aperçu</th></tr></thead>
+        <tbody id="formats-body"><tr><td colspan="4">Chargement…</td></tr></tbody>
+      </table></div>
+    </details>
+    <p class="help">Un Shapefile peut être envoyé fichier par fichier (.shp, .shx, .dbf, .prj…) ou dans un ZIP. Un dossier .gdb (File Geodatabase) doit être compressé en ZIP.</p>
+  </div></section>
+
+  <section class="section band" id="limites" aria-labelledby="h-limits"><div class="wrap">
+    <h2 id="h-limits">Ce qu'il faut savoir, honnêtement</h2>
+    <div class="abilities">
+      <div class="ability"><svg class="icon icon-lg" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#i-shield-check"/></svg><h3>Pas d'antivirus</h3><p>SIG-Cloud vérifie que le contenu correspond au format annoncé et n'ouvre jamais les archives ZIP. Mais il ne fait pas d'analyse antivirus : un fichier peut être marqué « non analysé en profondeur ».</p></div>
+      <div class="ability"><svg class="icon icon-lg" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#i-info"/></svg><h3>Aperçu limité</h3><p>L'aperçu cartographique gère le WGS84 (EPSG:4326) et les fichiers de taille raisonnable. Au-delà, le fichier reste stocké : télécharge-le pour l'ouvrir dans un logiciel SIG.</p></div>
+      <div class="ability"><svg class="icon icon-lg" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#i-lock"/></svg><h3>Privé par défaut</h3><p>Rien n'est accessible sans ton accord. Les téléchargements passent par des adresses temporaires et les accès sont vérifiés à chaque demande.</p></div>
+    </div>
+  </div></section>
+</main>
+<footer class="site-footer"><div class="wrap inner"><span>SIG-Cloud · version de lancement</span><span>Fonds de carte © contributeurs OpenStreetMap</span></div></footer>
+<noscript><div class="wrap section"><p>Le contenu interactif (liste des formats, connexion) nécessite JavaScript.</p></div></noscript>
+<script type="module" src="/scripts/home.js"></script>
+</body>
+</html>
